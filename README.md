@@ -1,2 +1,2 @@
-# cybersoft-java10-crm-app
-Repository nộp bài CRM cho lớp Java 10 - Cybersoft
+# Các nhóm nộp bài theo đúng branch có tên là tên nhóm
+## Danh sách nhóm
