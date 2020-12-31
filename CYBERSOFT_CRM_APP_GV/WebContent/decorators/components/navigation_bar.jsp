@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page import="com.cyberlogitec.util.Path" %>
 <div class="page__header mb-0">
     <div class="container page__container">
         <div class="navbar navbar-secondary navbar-light navbar-expand-sm p-0">
@@ -10,7 +12,7 @@
             <div class="navbar-collapse collapse" id="navbarsExample03">
                 <ul class="nav navbar-nav flex">
                     <li class="nav-item">
-                        <a class="nav-link active" href="dashboard.html">
+                        <a class="nav-link active" href="<c:url value="<%=Path.HOME %>" />">
                             Dashboard
                         </a>
                     </li>

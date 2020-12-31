@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page import="com.cyberlogitec.util.Path" %>
 <!-- Header Layout -->
 <div class="mdk-header-layout js-mdk-header-layout">
 <!-- Header -->
@@ -15,7 +17,7 @@
 
                 <!-- Navbar Brand -->
                 <a href="<%=request.getContextPath() %>/home" class="navbar-brand">
-                    <img class="navbar-brand-icon" src="assets/images/logo.png" height="50" alt="Cybersoft" />
+                    <img class="navbar-brand-icon" src="<c:url value="/assets/images/logo.png" />" height="50" alt="Cybersoft" />
                 </a>
 
                 <span class="mr-3"></span>
@@ -48,9 +50,9 @@
                                     <div class="dropdown-item d-flex">
                                         <div class="mr-3">
                                             <div class="avatar avatar-sm" style="width: 32px; height: 32px">
-                                                <img src="assets/images/256_daniel-gaffey-1060698-unsplash.jpg" alt="Avatar" class="avatar-img rounded-circle" />
+                                                <img src="<c:url value="/assets/images/256_daniel-gaffey-1060698-unsplash.jpg" />" alt="Avatar" class="avatar-img rounded-circle" />
                                             </div>
-                                        </div>
+                                        </div> 
                                         <div class="flex">
                                             <a href="">Tiến Hoàng</a> đã bình luận trong
                                             <a href="">Stack</a><br />
@@ -95,7 +97,7 @@
                                     <div class="dropdown-item d-flex">
                                         <div class="mr-3">
                                             <div class="avatar avatar-sm" style="width: 32px; height: 32px">
-                                                <img src="assets/images/256_daniel-gaffey-1060698-unsplash.jpg" alt="Avatar" class="avatar-img rounded-circle" />
+                                                <img src="<c:url value="/assets/images/256_daniel-gaffey-1060698-unsplash.jpg" />" alt="Avatar" class="avatar-img rounded-circle" />
                                             </div>
                                         </div>
                                         <div class="flex">
@@ -128,17 +130,17 @@
                                 <div>@tuanphan</div>
                             </div>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item active" href="<%=request.getContextPath() %>/home">
+                            <a class="dropdown-item active" href="<c:url value="<%=Path.HOME %>" />">
                                 Dashboard
                             </a>
-                            <a class="dropdown-item" href="profile.html">
+                            <a class="dropdown-item" href="<c:url value="<%=Path.USER_PROFILE %>" />"> 
                                 My profile
                             </a>
-                            <a class="dropdown-item" href="account-edit.html">
+                            <a class="dropdown-item" href="<c:url value="<%=Path.USER_EDIT %>" />">
                                 Edit account
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="login.html">Logout</a>
+                            <a class="dropdown-item" href="<c:url value="<%=Path.LOGOUT %>" />">Logout</a>
                         </div>
                     </li>
                 </ul>

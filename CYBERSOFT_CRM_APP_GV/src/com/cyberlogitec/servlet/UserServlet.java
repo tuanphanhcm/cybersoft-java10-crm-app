@@ -11,19 +11,15 @@ import javax.servlet.http.HttpServletResponse;
 import com.cyberlogitec.util.Path;
 import com.cyberlogitec.util.Url;
 
-@WebServlet(name = "authServlet", urlPatterns = {
-		Path.LOGIN,
-		Path.LOGOUT,
-		Path.SIGNUP,
-		Path.FORGOT_PASSWORD
+@WebServlet(name = "userServlet", urlPatterns = {
+		Path.USER_PROFILE
 })
-public class AuthenticationServlet extends HttpServlet {
-	
+public class UserServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		switch (req.getServletPath()) {
-		case Path.LOGIN:
-			req.getRequestDispatcher(Url.AUTH_LOGIN).forward(req, resp);
+		case Path.USER_PROFILE:
+			req.getRequestDispatcher(Url.USER_PROFILE).forward(req, resp);
 			break;
 
 		default:
