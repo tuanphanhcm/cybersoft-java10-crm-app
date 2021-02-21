@@ -21,6 +21,8 @@ public class AuthFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 
+		request.setCharacterEncoding("UTF-8");
+		
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse resp = (HttpServletResponse) response;
 
@@ -60,7 +62,7 @@ public class AuthFilter implements Filter {
 			chain.doFilter(request, response);
 			return;
 		}
-
+		
 		if (action.startsWith("/user") && roleName.equals("ROLE_MEMBER")) {
 			resp.sendRedirect(req.getContextPath() + "/403");
 			return;
@@ -88,5 +90,7 @@ public class AuthFilter implements Filter {
 		
 		chain.doFilter(request, response);
 
+		response.setCharacterEncoding("UTF-8");
+		
 	}
 }
