@@ -1,0 +1,7 @@
+INDEX VERSION 1.4+D:\MyFiles\eclipse-workspace\Bai tap CRM\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+769613909.index
+2690027187.index
+4178454715.index
+4238778307.index
+3401159054.index
+1749950381.index

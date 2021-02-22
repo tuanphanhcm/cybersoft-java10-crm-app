@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="com.myclass.utility.Conversion"/>
+<fullyQualifiedTypeName name="java.sql.Date"/>
+<fullyQualifiedTypeName name="com.myclass.utility.ServletConstant"/>
+<fullyQualifiedTypeName name="com.myclass.utility.UrlConstant"/>
+<fullyQualifiedTypeName name="java.util.Date"/>
+<fullyQualifiedTypeName name="com.myclass.entity.Role"/>
+<fullyQualifiedTypeName name="javax.servlet.http.HttpSession"/>
+<fullyQualifiedTypeName name="com.myclass.utility.DomainConstant"/>
+</qualifiedTypeNameHistroy>

@@ -1,0 +1,14 @@
+1612822080344	Rename method 'findAllJoin'
+1612945965137	Move 'decorators' to 'WebContent'
+1612948987426	Delete elements
+1612949848785	Delete element
+1613020920122	Delete element
+1613026245822	Delete element
+1613112466404	Rename type 'UserConstant'
+1613112499079	Rename type 'ServletConstant'
+1613112590996	Rename field 'URL_USER_HOMEPAGE'
+1613112598705	Rename field 'URL_ROLE_HOMEPAGE'
+1613112606261	Rename field 'URL_PROJECT_HOMEPAGE'
+1613112613650	Rename field 'URL_TASK_HOMEPAGE'
+1613112623980	Rename field 'URL_STATUS_HOMEPAGE'
+1613118247596	Rename local variable 'roleList'
