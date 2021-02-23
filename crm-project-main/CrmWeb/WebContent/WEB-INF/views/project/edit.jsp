@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Add project</title>
+<title>Edit project</title>
 </head>
 <body>
 

@@ -3,133 +3,99 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
-
 <head>
 <meta charset="UTF-8">
-<title>Thêm mới thành viên</title>
-<!-- Required meta tags -->
-<meta charset="utf-8">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<!-- Bootstrap CSS -->
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/static/css/bootstrap.min.css">
-<link rel="stylesheet"
-	href='<%=request.getContextPath()%>/static/css/style.css'>
+<title>User list</title>
 </head>
-
 <body>
-
-	<div class="d-flex justify-content-between">
-		<!-- SIDE BAR -->
-		<div id="side-bar">
-			<div class="logo">ADMIN PAGE</div>
-			<ul class="list-group rounded-0">
-				<li class="dashboard">DASHBOARD</li>
-				<li><a href="<%=request.getContextPath() %>/user"> <i class="fa fa-user mr-2"></i>
-						Quản lý thành viên
-				</a></li>
-				<li><a href="<%=request.getContextPath() %>/role"> <i class="fa fa-book mr-2"></i>
-						Quản lý quyền
-				</a></li>
-				    <li>
-                    <a href="<%=request.getContextPath()%>/project">
-                        <i class="fa fa-slack mr-2"></i> Quản lý dự án
-                    </a>
-                </li>
-				<li><a href="#"> <i class="fa fa-cogs mr-2"></i> Cấu hình
-						hệ thống
-				</a></li>
-				<li><a href="#"> <i class="fa fa-slack mr-2"></i> Thông tin
-						khác
-				</a></li>
-			</ul>
-		</div>
-
-		<div id="admin-wrapper">
-			<!-- HEADER -->
-			<nav class="navbar navbar-expand-sm navbar-light bg-light w-100">
-				<a class="navbar-brand" href="#"><i class="fa fa-align-justify"></i></a>
-				<button class="navbar-toggler d-lg-none" type="button"
-					data-toggle="collapse" data-target="#collapsibleNavId"
-					aria-controls="collapsibleNavId" aria-expanded="false"
-					aria-label="Toggle navigation"></button>
-				<div class="collapse navbar-collapse" id="collapsibleNavId">
-					<ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-						<li class="nav-item dropdown"><a
-							class="nav-link dropdown-toggle" href="#" id="dropdownId"
-							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								Cybersoft </a>
-							<div class="dropdown-menu dropdown-menu-right"
-								aria-labelledby="dropdownId">
-								<a class="dropdown-item" href="">Thông tin cá nhân</a> <a
-									class="dropdown-item" href="#">Cài đặt</a> <a
-									class="dropdown-item" href="#">Thoát</a>
-							</div></li>
-					</ul>
-				</div>
-			</nav>
-
-			<!-- CONTENT -->
-			<section id="admin-content" class="p-3">
-				<h3 class="mb-3">Danh sách thành viên</h3>
-                <div class="row">
-                    <div class="col-md-8">
-                        <a href="<%=request.getContextPath() %>/user/add" class="btn btn-primary">Thêm mới</a>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Tìm kiếm...">
-                            <div class="input-group-append">
-                                <span class="input-group-text" id="basic-addon2"><i class="fa fa-search"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <table class="table table-bordered table-hover mt-3">
-                    <thead>
-                        <tr>
-                            <th>STT</th>
-                            <th>Họ Tên</th>
-                            <th>Email</th>
-                            <th>Loại người dùng</th>
-                            <th>#</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    	<c:forEach items="${ users }" var="item">
-                        <tr>
-                            <td>${ item.id }</td>
-                            <td>${ item.fullname }</td>
-                            <td>${ item.email }</td>
-                            <%-- <td>
-                            	<c:forEach items="${ roles }" var="role">
-                            		<c:if test="${ item.roleId == role.id }">${ role.desc }</c:if>
-                            	</c:forEach>
-                            </td> --%>
-                            <td>${ item.roleDesc }</td>
-                            <td>
-                                <a href="<%=request.getContextPath()%>/user/edit?id=${item.id}" class="btn btn-sm btn-info">
-                                    <i class="fa fa-pencil-square-o"></i>
-                                </a>
-                                <a href="<%=request.getContextPath()%>/user/delete?id=${item.id}" class="btn btn-sm btn-danger">
-                                    <i class="fa fa-trash-o"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        </c:forEach>
-                    </tbody>
-                </table>
-			</section>
+<!-- Breadcrumb -->
+<div class="container page__heading-container">
+	<div class="page__heading">
+		<div class="d-flex align-items-center">
+			<div>
+				<nav aria-label="breadcrumb">
+					<ol class="breadcrumb mb-0">
+						<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/home">Home</a></li>
+						<li class="breadcrumb-item active" aria-current="page">
+							User</li>
+					</ol>
+				</nav>
+				<h1 class="m-0">User Manager</h1>
+			</div>
+			<div class="ml-auto">
+				<a href="" class="btn btn-light"><i
+					class="material-icons icon-16pt text-muted mr-1">settings</i>
+					Settings</a>
+			</div>
 		</div>
 	</div>
-	<script
-		src="<%=request.getContextPath()%>/static/js/jquery.slim.min.js"></script>
-	<script src="<%=request.getContextPath()%>/static/js/popper.min.js"></script>
-	<script
-		src="<%=request.getContextPath()%>/static/js/bootstrap.min.js"></script>
-</body>
+</div>
+<!-- End Breadcrumb -->
 
+<div class="container page__container">
+	<div class="row card-group-row">
+		<div class="col-lg-3 col-md-4 card-group-row__col">
+			<div class="card card-group-row__card card-shadow">
+				<div class="p-2 d-flex flex-row align-items-center">
+					<div class="avatar avatar-xs mr-2">
+						<span class="avatar-title rounded-circle text-center"> <i
+							class="material-icons text-white icon-18pt"> person_add </i>
+						</span>
+					</div>
+					<a href="${pageContext.request.contextPath}/user/add" class="text-dark"> <strong>Create New User</strong></a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="card card-form">
+		<div class="col-lg-12 card-form__body border-left">
+			<div class="table-responsive border-bottom" data-toggle="lists"
+				data-lists-values='["js-lists-values-employee-name"]'>
+				<table class="table mb-0 thead-border-top-0">
+					<thead>
+						<tr>
+							<th style="width: 24px;">ID</th>
+							<th>Full name</th>
+							<th style="width: 37px;">Role</th>
+							<th style="width: 120px;">Email</th>
+							<th style="width: 51px;">Phone</th>
+							<th style="width: 51px;"></th>
+						</tr>
+					</thead>
+					<tbody class="list" id="staff">
+						<c:forEach items="${ users }" var="item">
+							<tr>
+								<td><small class="text-muted">${ item.id }</small></td>
+								<td>
+									<div class="media align-items-center">
+										<div class="media-body">
+											<span class="js-lists-values-employee-name">${ item.fullname }</span>
+										</div>
+									</div>
+								</td>
+								<td><span class="badge badge-success">${ item.roleName }</span>
+								</td>
+								<td>${ item.email }</td>
+								<td>${ item.phone }</td>
+								<td class="text-right">
+									<div class="btn-group btn-group-sm">
+										<a role="button" class="btn btn-danger btn-sm" 
+											href="${pageContext.request.contextPath}/user/delete?id=${ item.id }">
+											<i class="material-icons">delete</i>
+										</a>
+										<a role="button" class="btn btn-success btn-sm"
+											href="${pageContext.request.contextPath}/user/edit?id=${ item.id }">
+											<i class="material-icons">create</i>
+										</a>
+									</div>
+								</td>
+							</tr>
+						</c:forEach>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
 </html>
