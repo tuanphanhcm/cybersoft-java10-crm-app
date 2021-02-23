@@ -9,16 +9,16 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 
-@WebFilter(urlPatterns = {"*"})
+@WebFilter(filterName = "utf8Filter", urlPatterns = { "*" })
 public class Utf8Filter implements Filter {
 
 	@Override
-	public void doFilter(ServletRequest request, ServletResponse response, 
-			FilterChain chain)
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		// CODE REQUEST
 		request.setCharacterEncoding("UTF-8");
 		chain.doFilter(request, response);
+		
 		// CODE RESPONSE
 		response.setCharacterEncoding("UTF-8");
 	}

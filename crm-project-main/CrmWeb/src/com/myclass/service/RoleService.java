@@ -3,65 +3,68 @@ package com.myclass.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
+
 import com.myclass.dto.RoleDto;
 import com.myclass.entity.Role;
 import com.myclass.repository.RoleRepository;
 
 public class RoleService {
-	
-	private RoleRepository roleRepository;
-	
+	private RoleRepository 	roleRepository;
+	private ModelMapper 	modelMapper;
+
 	public RoleService() {
-		roleRepository = new RoleRepository();
-	}
-	
-	public List<RoleDto> getAll() {
-		List<RoleDto> dtos = new ArrayList<RoleDto>();
-		// Gọi hàm truy vấn lấy dữ liệu
-		List<Role> entities = roleRepository.findAll(); // findAll trả về List<Role>
-		// Tham chiếu dữ liệu từ entity -> Dto
-		for (Role entity : entities) {
-			RoleDto dto = new RoleDto();
-			dto.setId(entity.getId());
-			dto.setName(entity.getName());
-			dto.setDesc(entity.getDescription());
-			
-			dtos.add(dto);
-		}
-		// Trả về dto
-		return dtos;
+		roleRepository 	= new RoleRepository();
+		modelMapper 	= new ModelMapper();
 	}
 
-	public RoleDto getById(int id) {
-		// Gọi hàm truy vấn lấy dữ liệu
-		Role entity = roleRepository.findById(id); // findAll trả về List<Role>
-		// Tham chiếu dữ liệu từ entity -> Dto
-		RoleDto dto = new RoleDto();
-		dto.setId(entity.getId());
-		dto.setName(entity.getName());
-		dto.setDesc(entity.getDescription());
-		// Trả về dto
-		return dto;
+	public List<RoleDto> getAll() {
+		// b1 goi ham chay cau lenh truy van lay du lieu
+		List<Role> entities = roleRepository.findAll(); // tra ve List<Role>
+
+		// b2 mapping tham chieu du lieu tu entity sang dto
+		List<RoleDto> listRoleDto = new ArrayList<RoleDto>();
+		for (Role entity : entities) {
+			/*
+			 * use modelMapper to map entity to dto syntax: OrderDTO orderDTO =
+			 * modelMapper.map(order, OrderDTO.class) 
+			 * author: Grey
+			 */
+			RoleDto dto = new RoleDto();
+			dto = modelMapper.map(entity, RoleDto.class);
+			listRoleDto.add(dto);
+		}
+		// b3 tra ve dto
+		return listRoleDto;
 	}
 	
 	public int insert(RoleDto dto) {
 		Role entity = new Role();
-		entity.setName(dto.getName());
-		entity.setDescription(dto.getDesc());
-		return roleRepository.save(entity);
+		
+		entity = modelMapper.map(dto, Role.class);
+
+		return roleRepository.addRole(entity);
 	}
-	
-	public int update(RoleDto dto) {
-		Role entity = roleRepository.findById(dto.getId());
-		if(entity != null) {
-			entity.setId(dto.getId());
-			entity.setName(dto.getName());
-			entity.setDescription(dto.getDesc());
-			return roleRepository.edit(entity);
-		}
-		return -1;
+
+	public RoleDto findById(int id) {
+		RoleDto dto 	= new RoleDto();
+		Role 	entity 	= roleRepository.findById(id);
+		
+		dto = modelMapper.map(entity, RoleDto.class);
+		
+		return dto;
 	}
-	public void delete(int id ) {
-		roleRepository.deleteById(id);
+
+	public int editRole(RoleDto dto) {
+		Role entity = new Role();
+		
+		entity = modelMapper.map(dto, Role.class);
+		
+		return roleRepository.editRole(entity);
 	}
+
+	public int deleteRole(int id) {
+		return roleRepository.removeRole(id);
+	}
+
 }

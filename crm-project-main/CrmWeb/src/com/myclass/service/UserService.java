@@ -1,126 +1,83 @@
 package com.myclass.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.mindrot.jbcrypt.BCrypt;
+import org.modelmapper.ModelMapper;
 
 import com.myclass.dto.UserDto;
-import com.myclass.dto.UserDto;
-import com.myclass.entity.Role;
 import com.myclass.entity.User;
-import com.myclass.entity.User;
-import com.myclass.repository.RoleRepository;
 import com.myclass.repository.UserRepository;
 
 public class UserService {
-
-	private UserRepository userRepository;
-	private RoleRepository roleRepository;
+	private UserRepository 	userRepository;
+	private ModelMapper 	modelMapper;
 
 	public UserService() {
-		userRepository = new UserRepository();
-		roleRepository = new RoleRepository();
+		userRepository 	= new UserRepository();
+		modelMapper 	= new ModelMapper();
 	}
 
-	public List<UserDto> getAll() {
-//		List<UserDto> dtos = new ArrayList<UserDto>();
-//		// Gọi hàm truy vấn lấy dữ liệu
-//		List<User> entities = userRepository.findAll(); // findAll trả về List<User>
-//		// Tham chiếu dữ liệu từ entity -> Dto
-//		for (User entity : entities) {
-//			UserDto dto = new UserDto();
-//			dto.setId(entity.getId());
-//			dto.setEmail(entity.getEmail());
-//			dto.setPassword(entity.getPassword());
-//			dto.setFullname(entity.getFullname());
-//			dto.setAvatar(entity.getAvatar());
-//			dto.setRoleId(entity.getRoleId());
-//			
-//			// LẤY RA THÔNG TIN Role DỰA VÀ KHÓA NGOẠI
-//			Role role = roleRepository.findById(entity.getRoleId());
-//			dto.setRoleDesc(role.getDescription());
-//			
-//			dtos.add(dto);
-//		}
-//		// Trả về dto
-//		return dtos;
-		return userRepository.findAllJoin();
+	public List<UserDto> getAllUser() {
+		return userRepository.getAll();
+	}
+
+	public int saveUser(UserDto dto) {
+		String hashedPassword = BCrypt.hashpw(dto.getPassword(), BCrypt.gensalt());
+		String fullName = dto.getFirstName() + " " + dto.getLastName();
+		
+		dto.setPassword(hashedPassword);
+		dto.setFullname(fullName);
+		
+		User entity = modelMapper.map(dto, User.class);
+		return userRepository.addUser(entity);
+	}
+
+	public int updateUser(UserDto dto) {
+		User entity = userRepository.findById(dto.getId());
+		
+		String hashedPassword = entity.getPassword();
+		String fullName = dto.getFirstName() + " " + dto.getLastName();
+		
+		if(!dto.getPassword().isEmpty())
+			hashedPassword = BCrypt.hashpw(dto.getPassword(), BCrypt.gensalt()); 
+		
+		dto.setPassword(hashedPassword);
+		dto.setFullname(fullName);
+
+		entity = modelMapper.map(dto, User.class);
+		return userRepository.editUser(entity);
+	}
+
+	public int deleteUser(int id) {
+		return userRepository.remove(id);
 	}
 
 	public UserDto getById(int id) {
+		User entity = userRepository.findById(id);
 		UserDto dto = new UserDto();
-		// Gọi hàm truy vấn lấy dữ liệu
-		User entity = userRepository.findById(id); // findAll trả về List<User>
-		// Tham chiếu dữ liệu từ entity -> Dto
-		if (entity != null) {
-			dto.setId(entity.getId());
-			dto.setEmail(entity.getEmail());
-			dto.setPassword(entity.getPassword());
-			dto.setFullname(entity.getFullname());
-			dto.setRoleId(entity.getRoleId());
-		}
-		// Trả về dto
+		
+		dto = modelMapper.map(entity, UserDto.class);
+		dto.splitFullname();
+
 		return dto;
 	}
 
-	public int insert(UserDto userDto) {
-
-		try {
-			String hashed = BCrypt.hashpw(userDto.getPassword(), BCrypt.gensalt());
-			// B1. THAM CHIẾU DTO -> ENTITY
-			User entity = new User(userDto.getEmail(), hashed, userDto.getFullname(),
-					userDto.getRoleId());
-//			//B2. GỌI HÀM TRUY VẤN THÊM MỚI USER
-			return userRepository.save(entity);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return -1;
+	public UserDto checkLogin(UserDto dto) {
+		User entity = userRepository.findByEmail(dto.getEmail());
+		
+		if(entity == null)
+			return null;
+		
+		String databasePassword = entity.getPassword();
+		String clientPassword	= dto.getPassword();
+		
+		if(!BCrypt.checkpw(clientPassword, databasePassword))
+			return null;
+		
+		UserDto checkedDto = new UserDto();
+		checkedDto = modelMapper.map(entity, UserDto.class);
+		return checkedDto;
 	}
 
-	public int update(UserDto userDto) {
-	
-		try {
-			// B1. THAM CHIẾU DTO -> ENTITY
-			User entity = userRepository.findById(userDto.getId());
-			if(entity != null) {
-				entity.setId(userDto.getId());
-				entity.setEmail(userDto.getEmail());
-				entity.setFullname(userDto.getFullname());
-				entity.setRoleId(userDto.getRoleId());
-				// NẾU PASS ĐƯỢC NHẬP => THAY ĐỔI PASS
-				if(!userDto.getPassword().isEmpty()) {
-					String hashed = BCrypt.hashpw(userDto.getPassword(), BCrypt.gensalt());
-					entity.setPassword(hashed);
-				}
-			}
-			
-			// B2. GỌI HÀM TRUY VẤN CẬP NHẬT USER
-			return userRepository.edit(entity);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return -1;
-	}
-	
-	public UserDto getByEmail(String email) {
-		UserDto dto = new UserDto();
-		// Gọi hàm truy vấn lấy dữ liệu
-		User entity = userRepository.findByEmail(email); // findAll trả về List<User>
-		// Tham chiếu dữ liệu từ entity -> Dto
-		if (entity != null) {
-			dto.setId(entity.getId());
-			dto.setEmail(entity.getEmail());
-			dto.setPassword(entity.getPassword());
-			dto.setFullname(entity.getFullname());
-			dto.setRoleId(entity.getRoleId());
-		}
-		// Trả về dto
-		return dto;
-	}
-	
-	public void delete(int id) {
-		userRepository.deleteById(id);	
-	}
 }

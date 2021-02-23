@@ -1,88 +1,90 @@
 package com.myclass.controller;
 
 import java.io.IOException;
-import java.util.List;
 
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.myclass.dto.RoleDto;
 import com.myclass.service.RoleService;
+import com.myclass.util.ControllerUrl;
+import com.myclass.util.JspPath;
 
-@WebServlet(urlPatterns = { "/role", "/role/add", "/role/edit", "/role/delete" })
-public class RoleController extends HttpServlet {
+@WebServlet(name = "roleController", urlPatterns = {ControllerUrl.URL_ROLE,
+													ControllerUrl.URL_ROLE_ADD,
+													ControllerUrl.URL_ROLE_DELETE,
+													ControllerUrl.URL_ROLE_EDIT})
+public class RoleController extends HttpServlet{
+	private static final long serialVersionUID = 1L;
+	
 	private RoleService roleService;
-
 	public RoleController() {
 		roleService = new RoleService();
 	}
-
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String action = req.getServletPath();
+		
 		switch (action) {
-		case "/role":
-			List<RoleDto> roles = roleService.getAll();
-			req.setAttribute("listRole", roles);
-			req.getRequestDispatcher("/WEB-INF/views/role/index.jsp").forward(req, resp);
+		case ControllerUrl.URL_ROLE:{
+			List<RoleDto> roleList = roleService.getAll();
+			
+			req.setAttribute("listRole", roleList);
+			req.getRequestDispatcher(JspPath.JSP_ROLE).forward(req, resp);
 			break;
-		case "/role/add":
-			req.getRequestDispatcher("/WEB-INF/views/role/add.jsp").forward(req, resp);
+		}
+		case ControllerUrl.URL_ROLE_ADD:{
+			req.getRequestDispatcher(JspPath.JSP_ROLE_ADD).forward(req, resp);
 			break;
-		case "/role/edit":
-			// B1: LẤY id TỪ URL
-			int idEdit = Integer.valueOf(req.getParameter("id"));
-
-			// B2: GỌI HÀM XỬ LÝ LOGIC CỦA TẦNG SERVICE
-			RoleDto dto = roleService.getById(idEdit); // Hàm trả v�? đối tượng Role
-
-			// B3: CHUYỂN TIẾP DỮ LIỆU LẤY �?ƯỢC QUA TRANG edit.jsp
+		}
+		case ControllerUrl.URL_ROLE_EDIT:{
+			int id = Integer.parseInt(req.getParameter("id"));
+			
+			RoleDto dto = roleService.findById(id);
+			
 			req.setAttribute("role", dto);
-			req.getRequestDispatcher("/WEB-INF/views/role/edit.jsp").forward(req, resp);
+			req.getRequestDispatcher(JspPath.JSP_ROLE_EDIT).forward(req, resp);
 			break;
-		case "/role/delete":
-			int idDel = Integer.valueOf(req.getParameter("id"));
-			roleService.delete(idDel);
-			resp.sendRedirect(req.getContextPath()+"/role");
-			break;
+		}
+		case ControllerUrl.URL_ROLE_DELETE:{
+			int id = Integer.parseInt(req.getParameter("id"));
+			
+			roleService.deleteRole(id);
+			resp.sendRedirect(req.getContextPath() + ControllerUrl.URL_ROLE);
+		}
 		default:
 			break;
 		}
 	}
-
+	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
-
 		String action = req.getServletPath();
-
-		// B1: LẤY THÔNG TIN TỪ FORM
-		String name = req.getParameter("name");
-		String desc = req.getParameter("desc");
-		RoleDto roleDto = new RoleDto(name, desc);
+		
 		switch (action) {
-		case "/role/add":
-			if (roleService.insert(roleDto) == -1) {
-				req.setAttribute("message", "Thêm mới thất bại!");
-				req.getRequestDispatcher("/WEB-INF/views/role/add.jsp").forward(req, resp);
-			} else {
-				resp.sendRedirect(req.getContextPath() + "/role");
-			}
+		case ControllerUrl.URL_ROLE_ADD:{
+			String rolename = req.getParameter("name");
+			String desc		= req.getParameter("description");
+			
+			RoleDto dto = new RoleDto(rolename, desc);
+			roleService.insert(dto);
+			resp.sendRedirect(req.getContextPath() + ControllerUrl.URL_ROLE);
 			break;
-		case "/role/edit":
-			int id = Integer.valueOf(req.getParameter("id"));
-			roleDto.setId(id);
-			if (roleService.update(roleDto) == -1) {
-				req.setAttribute("message", "Cập nhật thất bại!");
-				req.getRequestDispatcher("/WEB-INF/views/role/edit.jsp").forward(req, resp);
-			} else {
-				resp.sendRedirect(req.getContextPath() + "/role");
-			}
+		}
+		case ControllerUrl.URL_ROLE_EDIT:{
+			int		id			= Integer.parseInt(req.getParameter("id"));
+			String 	rolename 	= req.getParameter("name");
+			String 	desc		= req.getParameter("description");
+			
+			RoleDto dto = new RoleDto(id, rolename, desc);
+			roleService.editRole(dto);
+			resp.sendRedirect(req.getContextPath() + ControllerUrl.URL_ROLE);
 			break;
+		}
 		default:
 			break;
 		}

@@ -1,7 +1,6 @@
 package com.myclass.repository;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,13 +11,19 @@ import com.myclass.connection.DbConnection;
 import com.myclass.entity.Role;
 
 public class RoleRepository {
-
+	
 	public List<Role> findAll() {
-		List<Role> roles = new ArrayList<Role>();
+		List<Role> roleList = new ArrayList<Role>();
 		Connection conn = DbConnection.getConnection();
+		
+		// check whether connect to database
+		if(conn == null)
+			return null;
+		
 		// TRUY VẤN LẤY DỮ LIỆU
+		String query = "SELECT * FROM ROLE";
 		try {
-			PreparedStatement statement = conn.prepareStatement("SELECT * FROM roles");
+			PreparedStatement statement = conn.prepareStatement(query);
 			// Thực thi câu lệnh truy vấn
 			ResultSet resultSet = statement.executeQuery();
 			// Chuyển dữ liệu qua Role entity
@@ -28,82 +33,100 @@ public class RoleRepository {
 				entity.setName(resultSet.getString("name"));
 				entity.setDescription(resultSet.getString("description"));
 
-				roles.add(entity);
+				roleList.add(entity);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return roles;
+		return roleList;
 	}
-	
-	public int save(Role role) {
-		String query = "INSERT INTO roles(name, description) VALUES (?, ?)";
+
+	public int addRole(Role role) {
 		Connection conn = DbConnection.getConnection();
+		
+		// check whether connect to database
+		if(conn == null)
+			return 0;
+		
+		String query ="INSERT INTO ROLE (name , description) value (? ,?)";
 		try {
-			PreparedStatement statement = conn.prepareStatement(query);
+			PreparedStatement statement =  conn.prepareStatement(query);
 			statement.setString(1, role.getName());
 			statement.setString(2, role.getDescription());
-			// Thực thi câu lệnh truy vấn
+			
 			return statement.executeUpdate();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return -1;
+		return 0;
 	}
-	
-	public int edit(Role role) {
-		String query = "UPDATE roles SET name = ?, description = ? WHERE id = ?";
+
+	public int removeRole(int id) {
 		Connection conn = DbConnection.getConnection();
-		try {
-			PreparedStatement statement = conn.prepareStatement(query);
-			statement.setString(1, role.getName());
-			statement.setString(2, role.getDescription());
-			statement.setInt(3, role.getId()); 
-			
-			// Thực thi câu lệnh truy vấn
-			return statement.executeUpdate();
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return -1;
-	} 
-	
-	public Role findById(int id) {
-		String query = "SELECT * FROM roles WHERE id = ?";
-		Connection conn = DbConnection.getConnection();
-		Role entity = null;
+		
+		if(conn == null)
+			return 0;
+		
+		String query = "DELETE FROM ROLE WHERE id=?";
 		try {
 			PreparedStatement statement = conn.prepareStatement(query);
 			statement.setInt(1, id);
-			// Thực thi câu lệnh truy vấn
+			
+			return statement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+		
+	}
+
+	public Role findById(int id) {
+		Connection conn = DbConnection.getConnection();
+		
+		if(conn == null)
+			return null;
+		
+		String query = "SELECT * FROM ROLE WHERE id = ?";
+		try {
+			PreparedStatement statement = conn.prepareStatement(query);
+			statement.setInt(1, id);
+			//thực thi lệnh truy vấn
 			ResultSet resultSet = statement.executeQuery();
-			// Chuyển dữ liệu qua Role entity
-			while (resultSet.next()) {
-				entity = new Role();
+			//chuyển dữ liệu qua entity
+			while(resultSet.next()) {
+				Role entity  = new Role();
 				entity.setId(resultSet.getInt("id"));
 				entity.setName(resultSet.getString("name"));
 				entity.setDescription(resultSet.getString("description"));
-				break;
+				return entity;
 			}
+			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return entity;
+		return null;
 	}
-	public void deleteById(int id ) {
-		String query =  "DELETE FROM roles WHERE id = ?";
-		String removeId = String.valueOf(id);
+
+	public int editRole(Role role) {
 		Connection conn = DbConnection.getConnection();
+		
+		if(conn == null)
+			return 0;
+		
+		String query = "UPDATE ROLE SET name = ? , description = ? WHERE id = ?";
 		try {
 			PreparedStatement statement = conn.prepareStatement(query);
-			statement.setString(1, removeId);
-			statement.executeUpdate();
-		} catch(SQLException e) {
+			statement.setString(1, role.getName());
+			statement.setString(2, role.getDescription());
+			statement.setInt(3, role.getId());
+			
+			return statement.executeUpdate();
+			
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
+		return 0;
 	}
 }

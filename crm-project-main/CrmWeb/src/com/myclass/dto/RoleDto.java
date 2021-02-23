@@ -1,46 +1,50 @@
 package com.myclass.dto;
 
 public class RoleDto {
-	private int id;
-	private String name;
-	private String desc;
+	/* properties */
+	public	String	name;
+	public	String	description;
+	public	int		id;
 	
-	public RoleDto() {}
+	/* constructors */
+	public RoleDto(int id, String name, String description) {
+		this.name 			= name;
+		this.description 	= description;
+		this.id 			= id;
+	}
 	
-	public RoleDto(String name, String desc) {
-		super();
-		this.name = name;
-		this.desc = desc;
+	public RoleDto() {
+		this.name 			= "";
+		this.description 	= "";
+		this.id 			= 0;
 	}
 
-	public RoleDto(int id, String name, String desc) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.desc = desc;
+	public RoleDto(String name, String description) {
+		this.name 			= name;
+		this.description 	= description;
 	}
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
+	/* getter/setters */
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public String getDesc() {
-		return desc;
+	public String getDescription() {
+		return description;
 	}
-
-	public void setDesc(String desc) {
-		this.desc = desc;
+	public void setDescription(String description) {
+		this.description = description;
 	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	
+	
+
 }

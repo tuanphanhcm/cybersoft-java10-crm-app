@@ -10,160 +10,183 @@ import java.util.List;
 import com.myclass.connection.DbConnection;
 import com.myclass.dto.UserDto;
 import com.myclass.entity.User;
-import com.myclass.entity.User;
 
 public class UserRepository {
-
-	public List<UserDto> findAllJoin() {
-		String query = "SELECT * FROM users u JOIN roles r ON u.role_id = r.id";
-		List<UserDto> userDtos = new ArrayList<UserDto>();
+	public int addUser(User user) {
 		Connection conn = DbConnection.getConnection();
+		
+		if(conn == null)
+			return 0;
+		
+		String query = "INSERT INTO USER (email , password , fullname , address , phone, roleid) value (? , ? , ? , ? , ?, ?)";
+		try {
+			PreparedStatement statement = conn.prepareStatement(query);
+
+			statement.setString(1, user.getEmail());
+			statement.setString(2, user.getPassword());
+			statement.setString(3, user.getFullname());
+			statement.setString(4, user.getAddress());
+			statement.setString(5, user.getPhone());
+			statement.setInt(6, user.getRoleId());
+
+			return statement.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	public int remove(int id) {
+		Connection conn = DbConnection.getConnection();
+		
+		if(conn == null)
+			return 0;
+		
+		String query = "DELETE FROM USER WHERE id=?";
+		try {
+			PreparedStatement statement = conn.prepareStatement(query);
+			statement.setInt(1, id);
+			
+			return statement.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	public int editUser(User userEdit) {
+		Connection conn = DbConnection.getConnection();
+		
+		if(conn == null)
+			return 0;
+		
+		String query = "UPDATE USER SET email = ?, password = ?, fullname = ?, address = ?, phone = ?, roleid = ? WHERE id = ?";
+		try {
+			PreparedStatement statement = conn.prepareStatement(query);
+			statement.setString(1, userEdit.getEmail());
+			statement.setString(2, userEdit.getPassword());
+			statement.setString(3, userEdit.getFullname());
+			statement.setString(4, userEdit.getAddress());
+			statement.setString(5, userEdit.getPhone());
+			statement.setInt(6, userEdit.getRoleId());
+			statement.setInt(7, userEdit.getId());
+			
+			return statement.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return 0;
+	}
+
+	public User findById(int id) {
+		Connection conn = DbConnection.getConnection();
+		
+		if(conn == null)
+			return null;
+		
+		String query = "SELECT * FROM USER WHERE id=?";
+		try {
+			PreparedStatement statement = conn.prepareStatement(query);
+			statement.setInt(1, id);
+			ResultSet resultSet = statement.executeQuery();
+			while (resultSet.next()) {
+				User entity = new User();
+				
+				entity.setId(resultSet.getInt("id"));
+				entity.setEmail(resultSet.getString("email"));
+				entity.setPassword(resultSet.getString("password"));
+				entity.setAddress(resultSet.getString("address"));
+				entity.setFullname(resultSet.getString("fullname"));
+				entity.setPhone(resultSet.getString("phone"));
+				entity.setRoleId(resultSet.getInt("roleid"));
+				
+				return entity;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	// method get all userDto
+	public List<UserDto> getAll() {
+		Connection conn = DbConnection.getConnection();
+		
+		if(conn == null)
+			return null;
+		
+		List<UserDto> users = new ArrayList<UserDto>();
+		String query = "SELECT\r\n"
+						+ "	U.id,\r\n"
+						+ "	U.email,\r\n"
+						+ "	U.fullname,\r\n"
+						+ "	U.phone,\r\n"
+						+ "	R.`name` `roleName`\r\n"
+					+ "FROM\r\n"
+						+ "	ROLE R,\r\n"
+						+ "	USER U\r\n"
+					+ "WHERE\r\n"
+						+ "	R.id = U.roleid\r\n"
+					+ "ORDER BY\r\n"
+						+ "	U.id;";
 		try {
 			PreparedStatement statement = conn.prepareStatement(query);
 			ResultSet resultSet = statement.executeQuery();
 			while (resultSet.next()) {
 				UserDto dto = new UserDto();
+				
 				dto.setId(resultSet.getInt("id"));
 				dto.setEmail(resultSet.getString("email"));
-				dto.setPassword(resultSet.getString("password"));
 				dto.setFullname(resultSet.getString("fullname"));
-				dto.setRoleId(resultSet.getInt("role_id"));
-				dto.setRoleDesc(resultSet.getString("description"));
-				userDtos.add(dto);
+				dto.setPhone(resultSet.getString("phone"));
+				dto.setRoleName(resultSet.getString("roleName"));
+				
+				users.add(dto);
 			}
+			
+			return users;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return userDtos;
-	}
-
-	public List<User> findAll() {
-		List<User> users = new ArrayList<User>();
-		Connection conn = DbConnection.getConnection();
-		// TRUY VẤN LẤY DỮ LIỆU
-		try {
-			PreparedStatement statement = conn.prepareStatement("SELECT * FROM users");
-			// Thực thi câu lệnh truy vấn
-			ResultSet resultSet = statement.executeQuery();
-			// Chuyển dữ liệu qua User entity
-			while (resultSet.next()) {
-				User entity = new User();
-				entity.setId(resultSet.getInt("id"));
-				entity.setEmail(resultSet.getString("email"));
-				entity.setPassword(resultSet.getString("password"));
-				entity.setFullname(resultSet.getString("fullname"));
-				entity.setRoleId(resultSet.getInt("role_id"));
-				users.add(entity);
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return users;
-	}
-
-	public User findById(int id) {
-		User entity = null;
-		Connection conn = DbConnection.getConnection();
-		// TRUY VẤN LẤY DỮ LIỆU
-		try {
-			PreparedStatement statement = conn.prepareStatement("SELECT * FROM users WHERE id = ?");
-			statement.setInt(1, id);
-			// Thực thi câu lệnh truy vấn
-			ResultSet resultSet = statement.executeQuery();
-			// Chuyển dữ liệu qua User entity
-			while (resultSet.next()) {
-				entity = new User();
-				entity.setId(resultSet.getInt("id"));
-				entity.setEmail(resultSet.getString("email"));
-				entity.setPassword(resultSet.getString("password"));
-				entity.setFullname(resultSet.getString("fullname"));
-				entity.setRoleId(resultSet.getInt("role_id"));
-				break;
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return entity;
-	}
-
-	public int save(User entity) {
-		String query = "INSERT INTO users(email, password, fullname, role_id) VALUES (?, ?, ?, ?)";
-		Connection conn = DbConnection.getConnection();
-		try {
-			PreparedStatement statement = conn.prepareStatement(query);
-			statement.setString(1, entity.getEmail());
-			statement.setString(2, entity.getPassword());
-			statement.setString(3, entity.getFullname());
-			statement.setInt(4, entity.getRoleId());
-			// Thực thi câu lệnh truy vấn
-			return statement.executeUpdate();
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return -1;
-	}
-
-	public int edit(User entity) {
-		String query = "UPDATE users SET email = ?, password = ?, fullname = ?, role_id = ? WHERE id  = ?";
-		Connection conn = DbConnection.getConnection();
-		try {
-			PreparedStatement statement = conn.prepareStatement(query);
-			statement.setString(1, entity.getEmail());
-			statement.setString(2, entity.getPassword());
-			statement.setString(3, entity.getFullname());
-			statement.setInt(4, entity.getRoleId());
-			statement.setInt(5, entity.getId());
-			// Thực thi câu lệnh truy vấn
-			return statement.executeUpdate();
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return -1;
+		return null;
 	}
 
 	public User findByEmail(String email) {
-		String query = "SELECT * FROM users WHERE email = ?";
-		User entity = null;
 		Connection conn = DbConnection.getConnection();
-		// TRUY VẤN LẤY DỮ LIỆU
+		
+		if(conn == null)
+			return null;
+		
+		String query = "SELECT * FROM USER WHERE email = ?";
 		try {
 			PreparedStatement statement = conn.prepareStatement(query);
 			statement.setString(1, email);
-			// Thực thi câu lệnh truy vấn
 			ResultSet resultSet = statement.executeQuery();
-			// Chuyển dữ liệu qua User entity
-			while (resultSet.next()) {
-				entity = new User();
+			
+			while(resultSet.next()) {
+				User entity = new User();
+				
 				entity.setId(resultSet.getInt("id"));
 				entity.setEmail(resultSet.getString("email"));
 				entity.setPassword(resultSet.getString("password"));
+				entity.setAddress(resultSet.getString("address"));
 				entity.setFullname(resultSet.getString("fullname"));
-				entity.setRoleId(resultSet.getInt("role_id"));
-				break;
+				entity.setPhone(resultSet.getString("phone"));
+				entity.setRoleId(resultSet.getInt("roleid"));
+				
+				return entity;
 			}
+
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return entity;
+
+		return null;
 	}
 
-	public void deleteById(int id) {
-		String query = "DELETE FROM users WHERE id = ?";
-		String removeId = String.valueOf(id) ;
-		Connection conn = DbConnection.getConnection();
-		try {
-			PreparedStatement statement = conn.prepareStatement(query);
-			statement.setString(1,removeId);
-			statement.executeUpdate(); 
-		} catch(SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	
 }

@@ -1,37 +1,37 @@
 package com.myclass.entity;
 
 public class User {
-	private int id;
-	private String email;
-	private String password;
-	private String fullname;
-	private int roleId;
+	/* properties */
+	private int		id;
+	private String 	email;
+	private String 	password;
+	private String 	fullname;
+	private String	address;
+	private String	phone;
+	private int 	roleId;
+
+	/* constructors */
+	public User() {
+		this.id 		= 0;
+		this.email 		= "";
+		this.password 	= "";
+		this.fullname 	= "";
+		this.address 	= "";
+		this.phone 		= "";
+		this.roleId 	= 3;
+	}
 	
-	public User() {}
-	
-	public User(String email, String password, String fullname, int roleId) {
-		this.email = email;
-		this.password = password;
-		this.fullname = fullname;
-		this.roleId = roleId;
+	public User(String email, String password, String fullname, String address, String phone, int roleId) {
+		this.id 		= 0;
+		this.email 		= email;
+		this.password 	= password;
+		this.fullname 	= fullname;
+		this.address 	= address;
+		this.phone 		= phone;
+		this.roleId 	= roleId;
 	}
 
-	public User(int id, String email, String password, String fullname, int roleId) {
-		this.id = id;
-		this.email = email;
-		this.password = password;
-		this.fullname = fullname;
-		this.roleId = roleId;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
+	/* getters/setters */
 	public String getEmail() {
 		return email;
 	}
@@ -56,7 +56,6 @@ public class User {
 		this.fullname = fullname;
 	}
 
-
 	public int getRoleId() {
 		return roleId;
 	}
@@ -64,4 +63,29 @@ public class User {
 	public void setRoleId(int roleId) {
 		this.roleId = roleId;
 	}
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
 }
