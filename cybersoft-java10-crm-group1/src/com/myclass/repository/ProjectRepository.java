@@ -70,7 +70,7 @@ public class ProjectRepository {
 				+ "    P.START_DATE,\r\n"
 				+ "    P.END_DATE,\r\n"
 				+ "    P.LEADER_ID\r\n"
-				+ "FROM CRM.PROJECT P INNER JOIN CRM.TASK T\r\n"
+				+ "FROM CRM.PROJECT P LEFT JOIN CRM.TASK T\r\n"
 				+ "ON P.ID = T.PROJECT_ID WHERE USER_ID=? OR LEADER_ID=?";
 		Connection connection=DbConnection.getConnection();
 		ArrayList<Project> projectList = null;
