@@ -75,10 +75,11 @@ public class UserService {
 	private void convertToUser(User user, UserDto userDto) {
 		user.setEmail(userDto.getEmail());
 		String hashed;
-		if(user.getPassWord().equals(userDto.getPassWord())) {
-			hashed = user.getPassWord();
-		}else {
+		if(user.getPassWord() == null || (! user.getPassWord().equalsIgnoreCase(userDto.getPassWord()))) {
 			hashed = BCrypt.hashpw(userDto.getPassWord(), BCrypt.gensalt());
+		}else {
+			hashed = userDto.getPassWord();
+
 		}
 	 
 		//System.out.println("ma pass: "+hashed+" "+ hashed.length());
