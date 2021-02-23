@@ -130,7 +130,7 @@
     
     <script>
    		$(document).ready(function(){
-   			$('#start, #end').on('keyup', function () {
+   			$('#start, #end').on('keyup change', function () {
    			  if ($('#start').val() > $('#end').val()) 
    				$('button[type=submit]').prop('disabled', true);
    			  	 else 
