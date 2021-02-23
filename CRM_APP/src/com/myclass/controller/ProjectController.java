@@ -2,6 +2,7 @@ package com.myclass.controller;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -65,17 +66,13 @@ public class ProjectController extends HttpServlet{
 			break;
 		case "/project/listuser":
 			projectDtos = projectService.getAll();
-			req.setAttribute("projectDtoUser", projectDtos);
-			List<UserDto> listUserDto;
-			for (ProjectDto temp : projectDtos) {
-				listUserDto = projectService.getAllUserProject(temp.getId());
-				//temp.setListUser(listUserDto);
-				for (UserDto userDto : listUserDto) {
-					System.out.println(userDto.getFullName());
-				}
-				req.setAttribute("listUserProject", listUserDto);
-			}
 			
+			List<UserDto> listUserDtos = null;
+			for (ProjectDto temp : projectDtos) {
+				listUserDtos =	projectService.getAllUserProject(temp.getId());
+				temp.setListUser(listUserDtos);
+			}
+			req.setAttribute("projectDtoUser", projectDtos);
 			req.getRequestDispatcher("/WEB-INF/views/project/userproject.jsp").forward(req, resp);
 			break;
 		default:

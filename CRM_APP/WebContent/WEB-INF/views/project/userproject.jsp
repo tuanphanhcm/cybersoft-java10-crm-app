@@ -76,9 +76,9 @@
             <section id="admin-content" class="p-3">
                 <h3 class="mb-3">Danh sách thành viên dự án</h3>
                 <div class="row">
-                    <div class="col-md-8">
+                    <!-- <div class="col-md-8">
                         <a href="" class="btn btn-primary"></a>
-                    </div>
+                    </div> -->
                     <div class="col-md-4">
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="Tìm kiếm...">
@@ -108,9 +108,9 @@
                             <td>${item.endDate }</td>
                             <td>${item.userName }</td>
                             <td>
-                            	<c:forEach items="${listUserProject }" var="temp">                          		
-                            		${temp.id}
-                            		<br>
+                            	<c:forEach items="${item.listUser }" var="temp">                          		
+                            		<div>${temp.fullName}</div>
+                            		
                             	</c:forEach>                         
                              
                             </td>
@@ -118,11 +118,15 @@
                        	</c:forEach>
                     </tbody>
                 </table>
-            </section>
+				<div class="form-group">
+					<a class="btn btn-secondary"
+						href="<%=request.getContextPath()%>/project">Quay lại</a>
+				</div>
+			</section>
         </div>
     </div>
 
-    <script src="<%=request.getContextPath() %>/static/js/jquery.slim.min.js"></script>
+    <script src="<%=request.getContextPath()%>/static/js/jquery.slim.min.js"></script>
     <script src="<%=request.getContextPath() %>/static/js/popper.min.js"></script>
     <script src="<%=request.getContextPath() %>/static/js/bootstrap.min.js"></script>
 </body>

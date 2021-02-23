@@ -78,6 +78,7 @@
                 <div class="row">
                     <div class="col-md-8">
                         <a href="<%=request.getContextPath() %>/project/add" class="btn btn-primary">Thêm mới</a>
+                        <a href="<%=request.getContextPath() %>/project/listuser" class="btn btn-primary">Danh sách thành viên dự án</a>
                     </div>
                     <div class="col-md-4">
                         <div class="input-group">
