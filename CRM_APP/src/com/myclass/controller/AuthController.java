@@ -50,6 +50,15 @@ public class AuthController extends HttpServlet{
 				req.getRequestDispatcher("/WEB-INF/views/auth/login.jsp").forward(req, resp);
 			}
 			else {
+				if(userDto.getRoleName().equals("ROLE_ADMIN")) {
+					userDto.setStaff("ADMIN");
+				}
+				else if(userDto.getRoleName().equals("ROLE_LEADER")) {
+					userDto.setStaff("LEADER");
+				}
+				else if(userDto.getRoleName().equals("ROLE_MEMBER")) {
+					userDto.setStaff("MEMBER");
+				}
 				HttpSession session = req.getSession();
 				session.setAttribute("USER_LOGIN", userDto);
 				resp.sendRedirect(req.getContextPath()+"/home");

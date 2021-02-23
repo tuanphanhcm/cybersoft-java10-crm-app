@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.myclass.dto.ProjectDto;
+import com.myclass.dto.UserDto;
 import com.myclass.entity.Project;
 import com.myclass.repository.ProjectRepository;
 
@@ -93,5 +94,7 @@ public class ProjectService {
 		
 		return true;
 	}
-	
+	public List<UserDto> getAllUserProject(int idProject){
+		return projectRepository.getAllUserProject(idProject);
+	}
 }

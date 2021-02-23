@@ -45,6 +45,7 @@ public class AuthFilter implements Filter{
 		
 		// role attribute
 		String roleName = userDto.getRoleName();
+		
 		//System.out.println(roleName);
 		if(action.startsWith("/role") && (! roleName.equals("ROLE_ADMIN"))){
 			resp.sendRedirect(req.getContextPath()+"/403");

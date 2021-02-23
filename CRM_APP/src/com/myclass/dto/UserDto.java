@@ -9,6 +9,7 @@ public class UserDto {
 	private String avatar;
 	private int roleId;
 	private String roleName;
+	private String staff;
 	
 	public UserDto() {
 		// TODO Auto-generated constructor stub
@@ -77,6 +78,14 @@ public class UserDto {
 
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
+	}
+
+	public String getStaff() {
+		return staff;
+	}
+
+	public void setStaff(String staff) {
+		this.staff = staff;
 	}
 	
 	

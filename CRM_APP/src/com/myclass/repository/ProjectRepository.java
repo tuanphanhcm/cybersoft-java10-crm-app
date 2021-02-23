@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.myclass.connection.DbConnection;
 import com.myclass.dto.ProjectDto;
+import com.myclass.dto.UserDto;
 import com.myclass.entity.Project;
 
 public class ProjectRepository {
@@ -144,5 +145,31 @@ public class ProjectRepository {
 		}
 		
 		return false;
+	}
+	public List<UserDto> getAllUserProject(int idProject){
+		List<UserDto> listUserDto = new ArrayList<UserDto>();
+		Connection connection = DbConnection.getConnection();
+		String query = "SELECT * FROM projects INNER JOIN tasks ON projects.id = tasks.project_id INNER JOIN users ON tasks.user_id = users.id WHERE projects.id = ?";
+		try {
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setInt(1, idProject);
+			ResultSet resultSet = statement.executeQuery();
+			while(resultSet.next()) {
+				UserDto userDto = new UserDto();
+				userDto.setId(resultSet.getInt("users.id"));
+				userDto.setEmail(resultSet.getString("users.email"));
+				userDto.setPassWord(resultSet.getString("users.password"));
+				userDto.setFullName(resultSet.getNString("users.name"));
+				userDto.setAvatar(resultSet.getString("users.avatar"));
+				userDto.setRoleId(resultSet.getInt("users.role_id"));
+				
+				listUserDto.add(userDto);
+				
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return listUserDto;
 	}
 }

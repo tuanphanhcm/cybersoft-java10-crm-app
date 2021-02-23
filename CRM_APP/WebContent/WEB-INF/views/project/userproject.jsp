@@ -1,12 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+   
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 
 <head>
     <meta charset="UTF-8">
-    <title>Thêm mới dự án</title>
+    <title>Danh sách thành viên dự án</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -73,45 +74,54 @@
 
             <!-- CONTENT -->
             <section id="admin-content" class="p-3">
-                <h3 class="mb-4 text-center">Thêm mới dự án</h3>
-                <p class = "text-center text-danger">${message_add }</p>
-                <form method="post" action="<%=request.getContextPath()%>/project/add">
-                    <div class="row">
-                        <div class="col-md-6 m-auto">
-                            <div class="form-group">
-                                <label>Tên dự án</label>
-                                <input type="text" name="projectname" class="form-control" placeholder="name" />
-                            </div>
-                            <div class="form-group">
-                                <label>Mô tả</label>
-                                <input type="text" name="description" class="form-control" placeholder="description" />
-                            </div>
-                              <div class="form-group">
-                                <label>Ngày bắt đầu</label>
-                                <input type="text" name="startdate" class="form-control" placeholder="yyyy-mm-dd" />
-                            </div>
-                              <div class="form-group">
-                                <label>Ngày kết thúc</label>
-                                <input type="text" name="enddate" class="form-control" placeholder="yyyy-mm-dd" />
-                            </div>
-                              <div class="form-group">
-                                <label>Người tạo dự án</label> 
-                                <select class="form-control" name="userid">
-									<c:forEach items="${listUser }" var="item">
-										<option value="${item.id }" >${item.fullName }</option>
-									</c:forEach>
-								</select>
-							</div>
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-success">Lưu lại</button>
-                                <a class="btn btn-secondary" href="<%=request.getContextPath()%>/project">Quay lại</a>
+                <h3 class="mb-3">Danh sách thành viên dự án</h3>
+                <div class="row">
+                    <div class="col-md-8">
+                        <a href="" class="btn btn-primary"></a>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Tìm kiếm...">
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="basic-addon2"><i class="fa fa-search"></i></span>
                             </div>
                         </div>
                     </div>
-                </form>
+                </div>
+                <table class="table table-bordered table-hover mt-3">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên Dự Án</th>                            
+                            <th>Ngày Bắt Đầu</th>
+                            <th>Ngày Kết Thúc</th>
+                            <th>Người Tạo</th>
+                            <th>Thành viên dự án</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    	<c:forEach items="${projectDtoUser }" var = "item">
+                        <tr>
+                            <td>${item.id }</td>
+                            <td>${item.name }</td>                       
+                            <td>${item.startDate }</td>
+                            <td>${item.endDate }</td>
+                            <td>${item.userName }</td>
+                            <td>
+                            	<c:forEach items="${listUserProject }" var="temp">                          		
+                            		${temp.id}
+                            		<br>
+                            	</c:forEach>                         
+                             
+                            </td>
+                        </tr>
+                       	</c:forEach>
+                    </tbody>
+                </table>
             </section>
         </div>
     </div>
+
     <script src="<%=request.getContextPath() %>/static/js/jquery.slim.min.js"></script>
     <script src="<%=request.getContextPath() %>/static/js/popper.min.js"></script>
     <script src="<%=request.getContextPath() %>/static/js/bootstrap.min.js"></script>

@@ -15,7 +15,7 @@ import com.myclass.dto.UserDto;
 import com.myclass.service.ProjectService;
 import com.myclass.service.UserService;
 
-@WebServlet(name = "ProjectServlet", urlPatterns = {"/project", "/project/add", "/project/edit", "/project/delete"})
+@WebServlet(name = "ProjectServlet", urlPatterns = {"/project", "/project/add", "/project/edit", "/project/delete", "/project/listuser"})
 public class ProjectController extends HttpServlet{
 	
 	/**
@@ -62,6 +62,22 @@ public class ProjectController extends HttpServlet{
 			else {
 				resp.sendRedirect(req.getContextPath()+"/project");
 			}
+			break;
+		case "/project/listuser":
+			projectDtos = projectService.getAll();
+			req.setAttribute("projectDtoUser", projectDtos);
+			List<UserDto> listUserDto;
+			for (ProjectDto temp : projectDtos) {
+				listUserDto = projectService.getAllUserProject(temp.getId());
+				//temp.setListUser(listUserDto);
+				for (UserDto userDto : listUserDto) {
+					System.out.println(userDto.getFullName());
+				}
+				req.setAttribute("listUserProject", listUserDto);
+			}
+			
+			req.getRequestDispatcher("/WEB-INF/views/project/userproject.jsp").forward(req, resp);
+			break;
 		default:
 			break;
 		}

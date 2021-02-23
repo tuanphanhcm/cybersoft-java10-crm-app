@@ -22,7 +22,7 @@
     <div class="d-flex justify-content-between">
         <!-- SIDE BAR -->
         <div id="side-bar">
-            <div class="logo">ADMIN PAGE</div>
+            <div class="logo">${USER_LOGIN.staff } PAGE</div>
             <ul class="list-group rounded-0">
                 <li class="dashboard">DASHBOARD</li>
                 <li>

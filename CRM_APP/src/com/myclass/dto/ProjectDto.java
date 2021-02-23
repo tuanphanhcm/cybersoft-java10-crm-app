@@ -1,6 +1,7 @@
 package com.myclass.dto;
 
 import java.sql.Date;
+import java.util.List;
 
 public class ProjectDto {
 	private int id;
@@ -10,6 +11,8 @@ public class ProjectDto {
 	private Date endDate;
 	private int userId;
 	private String userName;
+	
+	private List<UserDto> listUser;
 
 	public ProjectDto() {
 		
@@ -78,6 +81,14 @@ public class ProjectDto {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public List<UserDto> getListUser() {
+		return listUser;
+	}
+
+	public void setListUser(List<UserDto> listUser) {
+		this.listUser = listUser;
 	}
 	
 	
