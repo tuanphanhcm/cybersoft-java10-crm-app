@@ -6,7 +6,10 @@ import com.myclass.dto.ProjectDTO;
 public interface ProjectService {
 	
 	List<ProjectDTO> findAll();
-	List<ProjectDTO> findByLeaderId(int leaderId);
-	int insert(ProjectDTO projectDTO);
+	List<ProjectDTO> findByLeader(int leader);
 	ProjectDTO findById(int id);
+	int insert(ProjectDTO projectDTO);
+	int update(ProjectDTO projectDTO);
+	void delete(int id);
+	
 }

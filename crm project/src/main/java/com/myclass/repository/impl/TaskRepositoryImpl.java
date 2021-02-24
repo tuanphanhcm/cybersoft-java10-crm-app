@@ -39,4 +39,18 @@ public class TaskRepositoryImpl implements TaskRepository {
 		return tasks;
 	}
 
+	@Override
+	public void deleteByProjectId(int projectId) {
+		try {
+			Connection connection = MySQLConnection.getConnection();
+			String sql = "DELETE FROM task WHERE projectid = ?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setInt(1, projectId);
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
 }

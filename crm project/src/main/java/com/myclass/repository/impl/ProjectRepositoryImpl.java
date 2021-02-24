@@ -90,7 +90,37 @@ public class ProjectRepositoryImpl implements ProjectRepository{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+	}
+
+	@Override
+	public int update(Project entity) {
+		try {
+			Connection connection = MySQLConnection.getConnection();
+			String sql = "UPDATE project SET name = ?, startdate = ?, enddate = ?, leader = ? WHERE id = ?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, entity.getName());
+			statement.setDate(2, entity.getStartDate());
+			statement.setDate(3, entity.getEndDate());
+			statement.setInt(4, entity.getLeader());
+			statement.setInt(5, entity.getId());
+			return statement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	@Override
+	public void delete(int id) {
+		try {
+			Connection connection = MySQLConnection.getConnection();
+			String sql = "DELETE FROM project WHERE id = ?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setInt(1, id);
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

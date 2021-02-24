@@ -7,5 +7,5 @@ import com.myclass.entity.Task;
 public interface TaskRepository {
 	
 	List<Task> findAll();
-	
+	void deleteByProjectId(int projectId);
 }

@@ -2,9 +2,7 @@ package com.myclass.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.mindrot.jbcrypt.BCrypt;
-
 import com.myclass.dto.UserDTO;
 import com.myclass.entity.User;
 import com.myclass.repository.ProjectRepository;
@@ -15,6 +13,7 @@ import com.myclass.service.UserService;
 import com.myclass.util.Mapper;
 
 public class UserServiceImpl implements UserService{
+	
 	private UserRepository repository;
 	private ProjectRepository projectRepository;
 	
@@ -79,7 +78,12 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public int removeUserFromProject(int userId, int projectId) {
-		return repository.removeUserFromProject(userId, projectId);
+	public List<UserDTO> findByProjectId(int projectId) {
+		List<UserDTO> users = new ArrayList<>();
+		for(User entity : repository.findByProjectId(projectId)) {
+			users.add(Mapper.convertToDTO(entity, UserDTO.class));
+		}
+		return users;
 	}
+	
 }

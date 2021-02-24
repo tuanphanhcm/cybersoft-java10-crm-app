@@ -39,7 +39,7 @@
 						<td>${item.id}</td>
 						<td>${item.fullName}</td>
 						<td>${item.email}</td>
-						<td>${item.roleName}</td>
+						<td>${item.roleDescription}</td>
 						<td><a href="<c:url value='/user/edit?id=${item.id}'/>" class="btn btn-sm btn-info"> <i
 								class="fa fa-pencil-square-o"></i>
 						</a> <a href="<c:url value='/user/remove?id=${item.id}'/>" class="btn btn-sm btn-danger"> <i

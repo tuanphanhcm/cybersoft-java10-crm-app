@@ -1,4 +1,4 @@
- package com.myclass.repository.impl;
+package com.myclass.repository.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,7 +12,7 @@ import com.myclass.dto.UserDTO;
 import com.myclass.entity.User;
 import com.myclass.repository.UserRepository;
 
-public class UserRepositoryImpl implements UserRepository{
+public class UserRepositoryImpl implements UserRepository {
 
 	@Override
 	public User findByEmail(String email) {
@@ -22,7 +22,7 @@ public class UserRepositoryImpl implements UserRepository{
 			PreparedStatement statement = connection.prepareStatement(sql);
 			statement.setString(1, email);
 			ResultSet result = statement.executeQuery();
-			if(result.next()) {
+			if (result.next()) {
 				User user = new User();
 				user.setId(result.getInt("id"));
 				user.setEmail(result.getString("email"));
@@ -53,7 +53,7 @@ public class UserRepositoryImpl implements UserRepository{
 				user.setFullName(resultSet.getString("fullname"));
 				user.setAvatar(resultSet.getString("avatar"));
 				user.setPassword(resultSet.getString("password"));
-				user.setRoleName(resultSet.getString("name"));
+				user.setRoleDescription(resultSet.getString("description"));
 				user.setRoleId(resultSet.getInt("role_id"));
 				list.add(user);
 			}
@@ -67,8 +67,7 @@ public class UserRepositoryImpl implements UserRepository{
 	public int insert(User entity) {
 		try {
 			Connection connection = MySQLConnection.getConnection();
-			String sql = "INSERT INTO users(email, password, fullname, avatar, role_id)"
-					+ " VALUES(?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO users(email, password, fullname, avatar, role_id)" + " VALUES(?, ?, ?, ?, ?)";
 			PreparedStatement statement = connection.prepareStatement(sql);
 			statement.setString(1, entity.getEmail());
 			statement.setString(2, entity.getPassword());
@@ -137,33 +136,7 @@ public class UserRepositoryImpl implements UserRepository{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-	}
 
-	@Override
-	public List<UserDTO> findByProjectId(int projectId) {
-		List<UserDTO> entities = new ArrayList<>();
-		try {
-			Connection connection = MySQLConnection.getConnection();
-			String sql = "SELECT * FROM users WHERE project_id = ?";
-			PreparedStatement statement = connection.prepareStatement(sql);
-			statement.setInt(1, projectId);
-			ResultSet resultSet = statement.executeQuery();
-			while (resultSet.next()) {
-				UserDTO user = new UserDTO();
-				user.setId(resultSet.getInt("id"));
-				user.setEmail(resultSet.getString("email"));
-				user.setFullName(resultSet.getString("fullname"));
-				user.setAvatar(resultSet.getString("avatar"));
-				user.setPassword(resultSet.getString("password"));
-				user.setRoleId(resultSet.getInt("role_id"));
-				user.setProjectId(resultSet.getInt("project_id"));
-				entities.add(user);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return entities;
 	}
 
 	@Override
@@ -176,10 +149,34 @@ public class UserRepositoryImpl implements UserRepository{
 			statement.setInt(2, projectId);
 			return statement.executeUpdate();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return 0;
+	}
+
+	@Override
+	public List<User> findByProjectId(int projectId) {
+		List<User> entities = new ArrayList<>();
+		try {
+			Connection connection = MySQLConnection.getConnection();
+			String sql = "SELECT * FROM users, user_project WHERE id = userid AND projectid = ?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setInt(1, projectId);
+			ResultSet result = statement.executeQuery();
+			while (result.next()) {
+				User user = new User();
+				user.setId(result.getInt("id"));
+				user.setEmail(result.getString("email"));
+				user.setFullName(result.getString("fullname"));
+				user.setAvatar(result.getString("avatar"));
+				user.setPassword(result.getString("password"));
+				user.setRoleId(result.getInt("role_id"));
+				entities.add(user);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return entities;
 	}
 
 }

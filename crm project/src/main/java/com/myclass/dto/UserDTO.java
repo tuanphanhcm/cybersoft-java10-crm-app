@@ -10,6 +10,7 @@ public class UserDTO {
 	private int roleId;
 	private String roleName;
 	private int projectId;
+	private String roleDescription;
 	
 	public int getId() {
 		return id;
@@ -59,6 +60,12 @@ public class UserDTO {
 	}
 	public void setProjectId(int projectId) {
 		this.projectId = projectId;
+	}
+	public String getRoleDescription() {
+		return roleDescription;
+	}
+	public void setRoleDescription(String roleDescription) {
+		this.roleDescription = roleDescription;
 	}
 	
 }

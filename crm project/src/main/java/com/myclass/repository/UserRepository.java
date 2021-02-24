@@ -12,6 +12,7 @@ public interface UserRepository {
 	User findById(int id);
 	int update(User entity);
 	void delete(int id);
-	List<UserDTO> findByProjectId(int projectId);
 	int removeUserFromProject(int userId, int projectId);
+	List<User> findByProjectId(int projectId);
+	
 }

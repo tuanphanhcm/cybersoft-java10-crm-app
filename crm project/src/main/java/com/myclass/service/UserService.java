@@ -12,5 +12,6 @@ public interface UserService {
 	int update(UserDTO userDTO);
 	void delete(int id);
 	List<UserDTO> findNormalUser();
-	int removeUserFromProject(int userId, int projectId);
+	List<UserDTO> findByProjectId(int projectId);
+	
 }
