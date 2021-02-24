@@ -53,8 +53,24 @@ public class RoleController extends HttpServlet{
 		case ControllerUrl.URL_ROLE_DELETE:{
 			int id = Integer.parseInt(req.getParameter("id"));
 			
-			roleService.deleteRole(id);
-			resp.sendRedirect(req.getContextPath() + ControllerUrl.URL_ROLE);
+			int result = roleService.deleteRole(id);
+			if (result < 1) {
+				String message = "Fail to remove the role!";
+				String typeOfMessage = "warning";
+				
+				req.setAttribute("message", message);
+				req.setAttribute("typeOfMessage", typeOfMessage);
+				req.getRequestDispatcher(JspPath.JSP_ROLE).forward(req, resp);
+				return;
+			}
+			
+			String message = "Remove the role successfully!";
+			String typeOfMessage = "success";
+			
+			req.setAttribute("message", message);
+			req.setAttribute("typeOfMessage", typeOfMessage);
+			req.getRequestDispatcher(JspPath.JSP_ROLE).forward(req, resp);
+			break;
 		}
 		default:
 			break;
@@ -71,8 +87,22 @@ public class RoleController extends HttpServlet{
 			String desc		= req.getParameter("description");
 			
 			RoleDto dto = new RoleDto(rolename, desc);
-			roleService.insert(dto);
-			resp.sendRedirect(req.getContextPath() + ControllerUrl.URL_ROLE);
+			int result = roleService.insert(dto);
+			if (result < 1) {
+				String message = "Fail to add the role!";
+				String typeOfMessage = "warning";
+				
+				req.setAttribute("message", message);
+				req.setAttribute("typeOfMessage", typeOfMessage);
+				req.getRequestDispatcher(JspPath.JSP_ROLE_ADD).forward(req, resp);
+				return;
+			}
+			String message = "Add the role successfully!";
+			String typeOfMessage = "success";
+			
+			req.setAttribute("message", message);
+			req.setAttribute("typeOfMessage", typeOfMessage);
+			req.getRequestDispatcher(JspPath.JSP_ROLE).forward(req, resp);
 			break;
 		}
 		case ControllerUrl.URL_ROLE_EDIT:{
@@ -81,8 +111,23 @@ public class RoleController extends HttpServlet{
 			String 	desc		= req.getParameter("description");
 			
 			RoleDto dto = new RoleDto(id, rolename, desc);
-			roleService.editRole(dto);
-			resp.sendRedirect(req.getContextPath() + ControllerUrl.URL_ROLE);
+			int result = roleService.editRole(dto);
+			if (result < 1) {
+				String message = "Fail to edit the role!";
+				String typeOfMessage = "warning";
+				
+				req.setAttribute("message", message);
+				req.setAttribute("typeOfMessage", typeOfMessage);
+				req.getRequestDispatcher(JspPath.JSP_ROLE_EDIT).forward(req, resp);
+				return;
+			}
+			
+			String message = "Edit the role successfully!";
+			String typeOfMessage = "success";
+			
+			req.setAttribute("message", message);
+			req.setAttribute("typeOfMessage", typeOfMessage);
+			req.getRequestDispatcher(JspPath.JSP_ROLE).forward(req, resp);
 			break;
 		}
 		default:

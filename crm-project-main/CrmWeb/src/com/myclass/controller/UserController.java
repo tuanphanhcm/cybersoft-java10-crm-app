@@ -54,8 +54,23 @@ public class UserController extends HttpServlet {
 		case ControllerUrl.URL_USER_DELETE:{
 			int id = Integer.parseInt(req.getParameter("id"));
 			
-			userService.deleteUser(id);
-			resp.sendRedirect(req.getContextPath() + ControllerUrl.URL_USER);
+			int result = userService.deleteUser(id);
+			if(result < 1) {
+				String message = "Fail to remove the user!";
+				String typeOfMessage = "warning";
+				
+				req.setAttribute("message", message);
+				req.setAttribute("typeOfMessage", typeOfMessage);
+				req.getRequestDispatcher(JspPath.JSP_USER).forward(req, resp);
+				return;
+			}
+			
+			String message = "Remove the user successfully!";
+			String typeOfMessage = "success";
+			
+			req.setAttribute("message", message);
+			req.setAttribute("typeOfMessage", typeOfMessage);
+			req.getRequestDispatcher(JspPath.JSP_USER).forward(req, resp);
 			break;
 		}
 		case ControllerUrl.URL_USER_EDIT:{
@@ -89,8 +104,23 @@ public class UserController extends HttpServlet {
 			int		roleId		= Integer.parseInt(req.getParameter("role"));
 			
 			UserDto dto = new UserDto(email, password, address, firstName, lastName, phone, roleId);
-			userService.saveUser(dto);
-			resp.sendRedirect(req.getContextPath() + ControllerUrl.URL_USER);
+			int result = userService.saveUser(dto);
+			if (result < 1) {
+				String message = "Fail to add the user!";
+				String typeOfMessage = "warning";
+				
+				req.setAttribute("message", message);
+				req.setAttribute("typeOfMessage", typeOfMessage);
+				req.getRequestDispatcher(JspPath.JSP_USER_ADD).forward(req, resp);
+				return;
+			}
+			
+			String message = "Add the user successfully!";
+			String typeOfMessage = "success";
+			
+			req.setAttribute("message", message);
+			req.setAttribute("typeOfMessage", typeOfMessage);
+			req.getRequestDispatcher(JspPath.JSP_USER).forward(req, resp);
 			break;
 		}
 		case ControllerUrl.URL_USER_EDIT:{
@@ -104,8 +134,23 @@ public class UserController extends HttpServlet {
 			int		roleId		= Integer.parseInt(req.getParameter("role"));
 			
 			UserDto dto = new UserDto(id, email, password, address, firstName, lastName, phone, roleId);
-			userService.updateUser(dto);
-			resp.sendRedirect(req.getContextPath() + ControllerUrl.URL_USER);
+			int result = userService.updateUser(dto);
+			if(result < 1) {
+				String message = "Fail to edit the user!";
+				String typeOfMessage = "warning";
+				
+				req.setAttribute("message", message);
+				req.setAttribute("typeOfMessage", typeOfMessage);
+				req.getRequestDispatcher(JspPath.JSP_PROJECT_EDIT).forward(req, resp);
+				return;
+			}
+			
+			String message = "Edit the user successfully!";
+			String typeOfMessage = "success";
+			
+			req.setAttribute("message", message);
+			req.setAttribute("typeOfMessage", typeOfMessage);
+			req.getRequestDispatcher(JspPath.JSP_USER).forward(req, resp);
 			break;
 		}
 		default:

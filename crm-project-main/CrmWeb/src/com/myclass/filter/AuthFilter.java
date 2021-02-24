@@ -24,7 +24,7 @@ public class AuthFilter implements Filter{
 		
 		String action = req.getServletPath();
 		
-		if(action.startsWith("/login")) {
+		if(action.startsWith("/login") || action.startsWith("/assets")) {
 			chain.doFilter(request, response);
 			return;
 		}
