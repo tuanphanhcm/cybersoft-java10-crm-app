@@ -7,7 +7,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.myclass.dto.UserDto;
 import com.myclass.service.RoleService;
@@ -74,8 +73,6 @@ public class UserController extends HttpServlet {
 			
 			UserDto dto = new UserDto(email, password, fullname, avatar, roleId);
 		
-			
-			
 			if( userService.addUser(dto) < 0 ) {
 				req.setAttribute("message" , "Thêm mới thất bại");
 				req.getRequestDispatcher("/WEB-INF/views/user/add.jsp").forward(req, resp);
@@ -93,23 +90,12 @@ public class UserController extends HttpServlet {
 			int roleIdEdit = Integer.parseInt(req.getParameter("roleId"));
 			
 			UserDto dtoEdit = new UserDto(id, emailEdit, passwordEdit, fullnameEdit, avatarEdit, roleIdEdit);
-			
-			HttpSession session = req.getSession();
-			UserDto loginDto = (UserDto)session.getAttribute("USER_LOGIN");	
-
-			
-			if( userService.editUser(dtoEdit, loginDto.getRoleId()) < 0 ) {
+		
+			if( userService.editUser(dtoEdit) < 0 ) {
 				req.setAttribute("message" , "Chỉnh sửa thất bại");
 				req.getRequestDispatcher("/WEB-INF/views/user/edit.jsp").forward(req, resp);
 			} else {
-				if (loginDto.getUserId() == id) {
-					session.removeAttribute("USER_LOGIN");
-					session.setAttribute("USER_LOGIN", userService.getUserByEmail(emailEdit));
-				}
-				req.setAttribute("user", userService.getUserById(id));
-				req.setAttribute("roles", roleService.getAllRoles());
-				req.setAttribute("message", "Chỉnh sửa thành công");
-				req.getRequestDispatcher("/WEB-INF/views/user/edit.jsp").forward(req, resp);
+				resp.sendRedirect(req.getContextPath() + "/user");
 			}
 			break;
 			
